@@ -11,8 +11,8 @@ const Login = () => {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Login successfull")
-    navigate("/home")
+    alert("Login successfull");
+    navigate("/home");
   };
 
   const handleChange = (e) => {

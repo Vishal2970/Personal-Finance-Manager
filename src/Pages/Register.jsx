@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+// for db
+//import { getDatabase, ref, set } from "firebase/database";
 import { useNavigate } from "react-router-dom";
+import app from "../firebase";
 
 const Register = () => {
+  // for db
+  //  const db = getDatabase(app);
+
+  const auth = getAuth(app);
+
   const [register, setRegister] = useState({
     name: "",
     email: "",
@@ -12,6 +21,18 @@ const Register = () => {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // for db
+    // set(ref(db, "users/" + userId), {
+    //   name: register.name,
+    //   email: register.email,
+    //   phone: register.phone,
+    //   password: register.password,
+    // });
+    const response=createUserWithEmailAndPassword(auth, register.email, register.password)
+      .then((value)=>console.log(value.user.getIdToken));
+
+      console.log(response.finally);
     alert("Register successfull");
     navigate("/");
   };
