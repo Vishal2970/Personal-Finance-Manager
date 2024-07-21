@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import app from '../firebase'
 
 const Login = () => {
+  const auth = getAuth(app);
+
   const [login, setLogin] = useState({
     email: "",
     password: "",
   });
 
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const response = await signInWithEmailAndPassword(auth, login.email, login.password);
+    const data = response.user;
+    console.log(data);
+    sessionStorage.setItem("Token", data.accessToken);
     alert("Login successfull");
     navigate("/home");
   };

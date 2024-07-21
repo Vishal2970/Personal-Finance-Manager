@@ -19,20 +19,13 @@ const Register = () => {
     password: "",
   });
   const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const response = createUserWithEmailAndPassword(auth, register.email, register.password);
+    // .then((value)=>console.log(value.user.getIdToken));
 
-    // for db
-    // set(ref(db, "users/" + userId), {
-    //   name: register.name,
-    //   email: register.email,
-    //   phone: register.phone,
-    //   password: register.password,
-    // });
-    const response=createUserWithEmailAndPassword(auth, register.email, register.password)
-      .then((value)=>console.log(value.user.getIdToken));
-
-      console.log(response.finally);
+    // console.log(response);
     alert("Register successfull");
     navigate("/");
   };

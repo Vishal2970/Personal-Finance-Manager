@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAuth, signOut } from 'firebase/auth'
+import app from '../firebase'
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const auth = getAuth(app);
+  const [token, setToken] = useState(sessionStorage.getItem("Token") || '');
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newToken = sessionStorage.getItem('Token');
+      if (newToken !== token) {
+        setToken(newToken);
+
+      }
+    };
+  })
+  const handleLogout = () => {
+    signOut(auth);
+    sessionStorage.clear();
+    alert("Logout")
+    navigate("/")
+  }
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
       <h1>Hello Vishal!</h1>
@@ -87,6 +108,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <button className='btn.btn' style={{ textAlign: "center" }} onClick={handleLogout} >Sign Out</button>
     </div>
   );
 };
