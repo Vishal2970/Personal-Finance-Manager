@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth, signOut } from 'firebase/auth'
-import app from '../firebase'
+import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+import app from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
   const auth = getAuth(app);
   const [token, setToken] = useState(sessionStorage.getItem("Token") || '');
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const newToken = sessionStorage.getItem('Token');
-      if (newToken !== token) {
-        setToken(newToken);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        user.getIdToken().then((idToken) => {
+          sessionStorage.setItem("Token", idToken);
+          setToken(idToken);
+        });
+      } else {
+        sessionStorage.removeItem("Token");
+        setToken('');
+        navigate("/");
       }
-    };
-  })
+    });
+
+    return () => unsubscribe();
+  }, [auth, navigate]);
+
   const handleLogout = () => {
     signOut(auth);
     sessionStorage.clear();
-    alert("Logout")
-    navigate("/")
-  }
+    alert("Logout");
+    navigate("/");
+  };
+
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
       <h1>Hello Vishal!</h1>
@@ -108,7 +118,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <button className='btn.btn' style={{ textAlign: "center" }} onClick={handleLogout} >Sign Out</button>
+      <button className='btn.btn' style={{ textAlign: "center" }} onClick={handleLogout}>Sign Out</button>
     </div>
   );
 };
