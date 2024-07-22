@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import app from '../firebase'
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import app from "../firebase";
 
 const Login = () => {
   const auth = getAuth(app);
@@ -16,12 +21,29 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await signInWithEmailAndPassword(auth, login.email, login.password);
-    const data = response.user;
-    console.log(data);
-    sessionStorage.setItem("Token", data.accessToken);
-    alert("Login successfull");
-    navigate("/home");
+    try {
+      await signInWithEmailAndPassword(auth, login.email, login.password);
+      // const data = response.user;
+      // console.log(data);
+      // sessionStorage.setItem("Token", data.accessToken);
+      // alert("Login successfull");
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      // console.log(response);
+      // // alert("Login with google");
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChange = (e) => {
@@ -77,6 +99,13 @@ const Login = () => {
             </div>
             <button type="submit" className="btn btn-primary">
               Sign In
+            </button>
+            <button
+              style={{ margin: "10px" }}
+              onClick={handleGoogleLogin}
+              className="btn btn-success"
+            >
+              Google
             </button>
           </form>
           <div style={{ marginTop: "10px" }}>
