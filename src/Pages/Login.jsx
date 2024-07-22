@@ -58,7 +58,7 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        blockSize: "100vh",
       }}
     >
       <div
@@ -66,7 +66,7 @@ const Login = () => {
         style={{
           boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
           transition: "0.3s",
-          width: "300px",
+          inlineSize: "300px",
           padding: "20px",
         }}
       >
@@ -108,7 +108,7 @@ const Login = () => {
               Google
             </button>
           </form>
-          <div style={{ marginTop: "10px" }}>
+          <div style={{ insetBlockStart: "10px" }}>
             <p>For register click here</p>
             <Link to="/register" className="btn btn-secondary">
               Register

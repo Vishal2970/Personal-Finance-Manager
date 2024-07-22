@@ -24,8 +24,8 @@ const Home = () => {
       <div
         style={{
           margin: "20px auto",
-          width: "100px",
-          height: "100px",
+          inlineSize: "100px",
+          blockSize: "100px",
           borderRadius: "50%",
           overflow: "hidden",
         }}
@@ -33,7 +33,7 @@ const Home = () => {
         <img
           src="https://via.placeholder.com/100" // Replace with actual profile picture URL
           alt="Profile"
-          style={{ width: "100%", height: "auto" }}
+          style={{ inlineSize: "100%", blockSize: "auto" }}
         />
       </div>
       <div className="container">

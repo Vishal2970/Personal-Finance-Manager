@@ -19,7 +19,7 @@ const Spinner = () => {
   }, [count, navigate,location]);
 
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
+    <div className="d-flex justify-content-center align-items-center" style={{ blockSize: "70vh" }}>
       <div className="text-center">
         <h1>Please Login First...</h1>
         <h2>Redirecting to you in {count} seconds...</h2>
