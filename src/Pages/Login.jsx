@@ -109,7 +109,7 @@ const Login = () => {
             </button>
           </form>
           <div style={{ marginTop: "10px" }}>
-            <p>Not signed in?</p>
+            <p>For register click here</p>
             <Link to="/register" className="btn btn-secondary">
               Register
             </Link>

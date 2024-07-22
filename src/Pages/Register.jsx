@@ -20,9 +20,9 @@ const Register = () => {
   });
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    const response = createUserWithEmailAndPassword(auth, register.email, register.password);
+    await createUserWithEmailAndPassword(auth, register.email, register.password);
     // .then((value)=>console.log(value.user.getIdToken));
 
     // console.log(response);

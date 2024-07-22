@@ -1,42 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import React from "react";
+import { getAuth, signOut } from "firebase/auth";
 import app from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "./Context/AuthProvider";
 
 const Home = () => {
   const navigate = useNavigate();
   const auth = getAuth(app);
-  const [userInfo, setUserInfo] = useState("");
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        user.getIdToken().then((idToken) => {
-          sessionStorage.setItem("Token", idToken);
-          console.log("Name " + user.displayName + " Email" + user.email);
-          setUserInfo(user);
-        });
-      } else {
-        sessionStorage.removeItem("Token");
-        setUserInfo("");
-        navigate("/");
-      }
-    });
-
-    return () => unsubscribe();
-  }, [auth, navigate]);
+  const { context } = useAuthContext();
 
   const handleLogout = () => {
     signOut(auth);
     sessionStorage.clear();
-    alert("Logout");
+    // alert("Logout");
     navigate("/");
   };
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
       <h1>
-        Hello {userInfo.displayName ? userInfo.displayName : userInfo.email}!
+        Hello {context.user?.displayName || context.user?.email}!
       </h1>
       <div
         style={{
@@ -78,21 +61,11 @@ const Home = () => {
                       Option 1
                     </label>
                     <div>
-                      <input
-                        type="radio"
-                        id="radio1"
-                        name="radio1"
-                        value="option1"
-                      />
+                      <input type="radio" id="radio1" name="radio1" value="option1" />
                       <label htmlFor="radio1"> Option 1</label>
                     </div>
                     <div>
-                      <input
-                        type="radio"
-                        id="radio2"
-                        name="radio1"
-                        value="option2"
-                      />
+                      <input type="radio" id="radio2" name="radio1" value="option2" />
                       <label htmlFor="radio2"> Option 2</label>
                     </div>
                   </div>
@@ -123,21 +96,11 @@ const Home = () => {
                       Option 2
                     </label>
                     <div>
-                      <input
-                        type="radio"
-                        id="radio3"
-                        name="radio2"
-                        value="option1"
-                      />
+                      <input type="radio" id="radio3" name="radio2" value="option1" />
                       <label htmlFor="radio3"> Option 1</label>
                     </div>
                     <div>
-                      <input
-                        type="radio"
-                        id="radio4"
-                        name="radio2"
-                        value="option2"
-                      />
+                      <input type="radio" id="radio4" name="radio2" value="option2" />
                       <label htmlFor="radio4"> Option 2</label>
                     </div>
                   </div>
@@ -168,21 +131,11 @@ const Home = () => {
                       Option 3
                     </label>
                     <div>
-                      <input
-                        type="radio"
-                        id="radio5"
-                        name="radio3"
-                        value="option1"
-                      />
+                      <input type="radio" id="radio5" name="radio3" value="option1" />
                       <label htmlFor="radio5"> Option 1</label>
                     </div>
                     <div>
-                      <input
-                        type="radio"
-                        id="radio6"
-                        name="radio3"
-                        value="option2"
-                      />
+                      <input type="radio" id="radio6" name="radio3" value="option2" />
                       <label htmlFor="radio6"> Option 2</label>
                     </div>
                   </div>
@@ -193,7 +146,7 @@ const Home = () => {
         </div>
       </div>
       <button
-        className="btn.btn"
+        className="btn btn-primary"
         style={{ textAlign: "center" }}
         onClick={handleLogout}
       >
