@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import app from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../Pages/Context/AuthProvider";
+import { useAuthContext } from "./Context/AuthProvider";
 import Box from "../components/Box";
 import DisplayBox from "../components/DisplayBox";
 
 const Home = () => {
-  const cardName1 = "Card for Vishal";
-  const cardName2 = "Card for Shweta";
-  const cardName3 = "Card for Rishi";
   const navigate = useNavigate();
   const auth = getAuth(app);
   const db = getFirestore(app);
@@ -35,12 +26,12 @@ const Home = () => {
 
   useEffect(() => {
     const fetchEntries = async (cardName) => {
-      const userId = context.user?.uid; // Get the user ID from context
-      if (!userId) return; // If not authenticated, do not fetch data
+      const userId = context.user?.uid;
+      if (!userId) return;
 
       const q = query(
         collection(db, "cards", cardName, "entries"),
-        where("userId", "==", userId) // Fetch documents where userId matches
+        where("userId", "==", userId)
       );
       const querySnapshot = await getDocs(q);
       const fetchedEntries = [];
@@ -53,16 +44,22 @@ const Home = () => {
       }));
     };
 
-    // Fetch entries for all cards
-    fetchEntries(cardName1);
-    fetchEntries(cardName2);
-    fetchEntries(cardName3);
+    fetchEntries("Card for Vishal");
+    fetchEntries("Card for Shweta");
+    fetchEntries("Card for Rishi");
   }, [context.user, db]);
 
   const handleAddEntry = (cardName, newEntry) => {
     setEntries((prevEntries) => ({
       ...prevEntries,
       [cardName]: [...prevEntries[cardName], newEntry],
+    }));
+  };
+
+  const handleDeleteEntry = (cardName, entryId) => {
+    setEntries((prevEntries) => ({
+      ...prevEntries,
+      [cardName]: prevEntries[cardName].filter((entry) => entry.id !== entryId),
     }));
   };
 
@@ -87,14 +84,26 @@ const Home = () => {
 
       <div className="container">
         <div className="row">
-          <Box cardName={cardName1} onAddEntry={handleAddEntry} />
-          <Box cardName={cardName2} onAddEntry={handleAddEntry} />
-          <Box cardName={cardName3} onAddEntry={handleAddEntry} />
+          <Box cardName="Card for Vishal" onAddEntry={handleAddEntry} />
+          <Box cardName="Card for Shweta" onAddEntry={handleAddEntry} />
+          <Box cardName="Card for Rishi" onAddEntry={handleAddEntry} />
         </div>
         <div className="row">
-          <DisplayBox cardName={cardName1} entries={entries[cardName1]} />
-          <DisplayBox cardName={cardName2} entries={entries[cardName2]} />
-          <DisplayBox cardName={cardName3} entries={entries[cardName3]} />
+          <DisplayBox
+            cardName="Card for Vishal"
+            entries={entries["Card for Vishal"]}
+            onDeleteEntry={handleDeleteEntry}
+          />
+          <DisplayBox
+            cardName="Card for Shweta"
+            entries={entries["Card for Shweta"]}
+            onDeleteEntry={handleDeleteEntry}
+          />
+          <DisplayBox
+            cardName="Card for Rishi"
+            entries={entries["Card for Rishi"]}
+            onDeleteEntry={handleDeleteEntry}
+          />
         </div>
       </div>
 
