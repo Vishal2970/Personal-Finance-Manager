@@ -1,39 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import app from "../firebase";
-import { useAuthContext } from "../Pages/Context/AuthProvider";
+import React from "react";
 
-function DisplayBox({ cardName }) {
-  const [entries, setEntries] = useState([]);
-  const db = getFirestore(app);
-  const { context } = useAuthContext();
-
-  useEffect(() => {
-    const fetchEntries = async () => {
-      const userId = context.user?.uid; // Get the user ID from context
-      if (!userId) return; // If not authenticated, do not fetch data
-
-      const q = query(
-        collection(db, "cards", cardName, "entries"),
-        where("userId", "==", userId) // Fetch documents where userId matches
-      );
-      const querySnapshot = await getDocs(q);
-      const fetchedEntries = [];
-      querySnapshot.forEach((doc) => {
-        fetchedEntries.push({ id: doc.id, ...doc.data() });
-      });
-      setEntries(fetchedEntries);
-    };
-
-    fetchEntries();
-  }, [cardName, context.user, db]);
-
+function DisplayBox({ cardName, entries }) {
   return (
     <div className="col-md-4">
       <div

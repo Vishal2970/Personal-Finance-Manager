@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
-import app from "../firebase";
+import  app  from "../firebase";
 import { useAuthContext } from "../Pages/Context/AuthProvider";
 
-function Box({ cardName }) {
+function Box({ cardName, onAddEntry }) {
   const [inputValue, setInputValue] = useState("");
   const db = getFirestore(app);
   const { context } = useAuthContext();
@@ -13,16 +13,14 @@ function Box({ cardName }) {
     try {
       const userId = context.user?.uid; // Get the user ID from context
       if (!userId) throw new Error("User not authenticated");
-
-      const docRef = await addDoc(
-        collection(db, "cards", cardName, "entries"),
-        {
-          content: inputValue,
-          userId: userId, // Add userId to the document
-        }
-      );
+      
+      const docRef = await addDoc(collection(db, "cards", cardName, "entries"), {
+        content: inputValue,
+        userId: userId // Add userId to the document
+      });
       console.log("Document written with ID: ", docRef.id);
-      alert("Added to Firestore");
+      onAddEntry(cardName, { id: docRef.id, content: inputValue, userId }); // Call the parent component function to update the state
+    //   alert("Added to Firestore");
       setInputValue("");
     } catch (e) {
       console.error("Error adding document: ", e);
