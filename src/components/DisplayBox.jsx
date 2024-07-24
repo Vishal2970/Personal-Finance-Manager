@@ -1,6 +1,6 @@
 import React from "react";
 import { getFirestore, doc, deleteDoc } from "firebase/firestore";
-import app  from "../firebase";
+import app from "../firebase";
 
 function DisplayBox({ cardName, entries, onDeleteEntry }) {
   const db = getFirestore(app);
@@ -32,7 +32,7 @@ function DisplayBox({ cardName, entries, onDeleteEntry }) {
               <li key={entry.id}>
                 {entry.content}
                 <button
-                  style={{ marginLeft: "10px" }}
+                  style={{ insetInlineStart: "10px" }}
                   className="btn btn-danger btn-sm"
                   onClick={() => handleDelete(entry.id)}
                 >
