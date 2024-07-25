@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import app from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./Context/AuthProvider";
@@ -13,9 +19,9 @@ const Home = () => {
   const db = getFirestore(app);
   const { context } = useAuthContext();
   const [entries, setEntries] = useState({
-    "Card for Vishal": [],
-    "Card for Shweta": [],
-    "Card for Rishi": [],
+    "Task 1": [],
+    "Task 2": [],
+    "Task 3": [],
   });
 
   const handleLogout = () => {
@@ -44,9 +50,9 @@ const Home = () => {
       }));
     };
 
-    fetchEntries("Card for Vishal");
-    fetchEntries("Card for Shweta");
-    fetchEntries("Card for Rishi");
+    fetchEntries("Task 1");
+    fetchEntries("Task 2");
+    fetchEntries("Task 3");
   }, [context.user, db]);
 
   const handleAddEntry = (cardName, newEntry) => {
@@ -76,37 +82,36 @@ const Home = () => {
         }}
       >
         <img
-          src="https://via.placeholder.com/100" // Replace with actual profile picture URL
+          src={context.user?.photoURL||"https://via.placeholder.com/100"}
           alt="Profile"
           style={{ inlineSize: "100%", blockSize: "auto" }}
         />
       </div>
-
+      
       <div className="container">
         <div className="row">
-          <Box cardName="Card for Vishal" onAddEntry={handleAddEntry} />
-          <Box cardName="Card for Shweta" onAddEntry={handleAddEntry} />
-          <Box cardName="Card for Rishi" onAddEntry={handleAddEntry} />
+          <Box cardName="Task 1" onAddEntry={handleAddEntry} />
+          <Box cardName="Task 2" onAddEntry={handleAddEntry} />
+          <Box cardName="Task 3" onAddEntry={handleAddEntry} />
         </div>
         <div className="row">
           <DisplayBox
-            cardName="Card for Vishal"
-            entries={entries["Card for Vishal"]}
+            cardName="Task 1"
+            entries={entries["Task 1"]}
             onDeleteEntry={handleDeleteEntry}
           />
           <DisplayBox
-            cardName="Card for Shweta"
-            entries={entries["Card for Shweta"]}
+            cardName="Task 2"
+            entries={entries["Task 2"]}
             onDeleteEntry={handleDeleteEntry}
           />
           <DisplayBox
-            cardName="Card for Rishi"
-            entries={entries["Card for Rishi"]}
+            cardName="Task 3"
+            entries={entries["Task 3"]}
             onDeleteEntry={handleDeleteEntry}
           />
         </div>
       </div>
-
       <button
         className="btn btn-primary"
         style={{ textAlign: "center" }}

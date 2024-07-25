@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-} from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import app from "../firebase";
 
 const Login = () => {
@@ -23,10 +17,6 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, login.email, login.password);
-      // const data = response.user;
-      // console.log(data);
-      // sessionStorage.setItem("Token", data.accessToken);
-      // alert("Login successfull");
       navigate("/home");
     } catch (error) {
       console.log(error);
@@ -38,8 +28,6 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      // console.log(response);
-      // // alert("Login with google");
       navigate("/home");
     } catch (error) {
       console.log(error);
@@ -108,12 +96,12 @@ const Login = () => {
               Google
             </button>
           </form>
-          <div style={{ insetBlockStart: "10px" }}>
+          {/* <div style={{ insetBlockStart: "10px" }}>
             <p>For register click here</p>
-            <Link to="/register" className="btn btn-secondary">
+            <Link to="/signup" className="btn btn-secondary">
               Register
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

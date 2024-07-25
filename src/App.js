@@ -10,15 +10,16 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/signup" element={<Register />} />
       <Route path="/home" element={<Private />}>
         <Route path="" element={<Home />} />
       </Route>
-      <Route path="/register" element={<Register />} />
     </Routes>
   );
 };
 
 export default App;
+
 
 /* <Route path="/profile" element={<PrivateRoute />}>
   <Route path="" element={<Profile title="Profile" />} />

@@ -50,6 +50,7 @@ function Box({ cardName, onAddEntry }) {
                 className="form-control"
                 id="input1"
                 value={inputValue}
+                required
                 onChange={(e) => setInputValue(e.target.value)}
               />
               <button
